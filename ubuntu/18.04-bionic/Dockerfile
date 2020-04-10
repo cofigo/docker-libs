@@ -1,5 +1,11 @@
 FROM ubuntu:18.04
 
+LABEL \
+	"Version"="18.04" \
+	"Description"="Docker image for Ubuntu 18.04(bionic)." \
+	"Dockerfile"="https://github.com/cofigo/docker-libs" \
+	"Vendor"="Endial Fang (endial@126.com)"
+
 RUN set -eux \
 	&& mv /etc/apt/sources.list /etc/apt/sources.list.bak \
 	&& echo "deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse" > /etc/apt/sources.list \
