@@ -86,4 +86,4 @@ WORKDIR /srv/data
 
 ENTRYPOINT ["/etc/redis/entrypoint.sh"]
 
-CMD ["redis-server"]
+CMD ["redis-server", "/srv/conf/redis/redis.conf"]
