@@ -24,6 +24,6 @@ EXPOSE 9000
 
 VOLUME ["/srv/conf", "/srv/www", "/var/log", "/var/run"]
 
-ENTRYPOINT ["/etc/php-fpm/entrypoint.sh"]
+ENTRYPOINT ["/etc/php5/entrypoint.sh"]
 
 CMD ["php-fpm5", "-R", "-F", "-c", "/srv/conf/php5/php.ini", "-y", "/srv/conf/php5/php-fpm.conf"]
