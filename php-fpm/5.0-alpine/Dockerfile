@@ -1,4 +1,4 @@
-FROM endial/alpine:v3.11
+FROM endial/alpine:v3.6
 
 LABEL \
 	"Version"="5.0" \
