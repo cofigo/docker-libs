@@ -1,13 +1,13 @@
 # 简介
 
-基于的Alpine系统的Docker镜像。基于官方Ubuntu 18.0.4镜像。
+基于的Alpine系统的Docker镜像。基于官方Ubuntu 18.04镜像。
 
 
 
 ## 基本信息
 
-* 镜像地址：endial/ubuntu:v18.0.4
-* 依赖镜像：ubuntu:18.0.4
+* 镜像地址：endial/ubuntu:v18.04
+* 依赖镜像：ubuntu:18.04
 
 
 
@@ -49,7 +49,7 @@
 下载镜像：
 
 ```shell
-docker pull endial/ubuntu:v18.0.4
+docker pull endial/ubuntu:v18.04
 ```
 
 查看镜像：
@@ -65,12 +65,12 @@ docker images
 生成并运行一个新的容器：
 
 ```shell
-docker run -it --rm endial/ubuntu:v18.0.4 /bin/bash
+docker run -it --rm endial/ubuntu:v18.04 /bin/bash
 ```
 
 - `-it`：使用交互式终端启动容器
 - `--rm`：退出时删除容器
-- `endial/ubuntu:v18.0.4`：包含版本信息的镜像名称
+- `endial/ubuntu:v18.04`：包含版本信息的镜像名称
 - `/bin/bash`：在容器中执行`/bin/bash`命令
 
 
