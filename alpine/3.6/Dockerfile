@@ -6,8 +6,6 @@ LABEL \
         "Dockerfile"="https://github.com/cofigo/docker-libs" \
         "Vendor"="Endial Fang (endial@126.com)"
 
-ENV GOSU_VERSION 1.11
-
 RUN set -eux \
 	\
 	&& echo "http://mirrors.aliyun.com/alpine/v3.6/main" > /etc/apk/repositories \
