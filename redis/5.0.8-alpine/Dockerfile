@@ -13,10 +13,6 @@ ENV REDIS_DOWNLOAD_SHA f3c7eac42f433326a8d981b50dba0169fdfaf46abb23fcda2f933a755
 RUN addgroup -S -g 1000 redis; \
 	adduser -S -G redis -u 1000 redis; \
 	\
-	mkdir -p /srv/data; \
-	mkdir -p /etc/redis; \
-	chown redis:redis /srv/data/redis; \
-	\
 	apk add --no-cache \
 		'su-exec>=0.2' \
 		tzdata \
@@ -63,7 +59,17 @@ RUN addgroup -S -g 1000 redis; \
 		-exec ln -svfT 'redis-server' '{}' ';' \
 	; \
 	\
-	cp -rf /usr/src/redis/*.conf /etc/redis/; \
+	mkdir -p /etc/redis/default; \
+	chown redis:root /etc/redis/default; \
+	mkdir -p /srv/data/redis; \
+	chown redis:root /srv/data/redis; \
+	mkdir -p /srv/conf/redis; \
+	chown redis:root /srv/conf/redis; \
+	\
+#	cp -rf /usr/src/redis/*.conf /etc/redis/; \
+	ln -sf /srv/conf/redis/redis.conf /etc/redis/redis.conf; \
+	ln -sf /srv/conf/redis/sentinel.conf /etc/redis/sentinel.conf; \
+	ln -sf /etc/redis/entrypoint.sh /usr/local/bin/entrypoint.sh; \
 	rm -r /usr/src/redis; \
 	\
 	runDeps="$( \
@@ -82,8 +88,8 @@ VOLUME [ "/srv/data", "/srv/conf", "/var/log", "/var/run" ]
 EXPOSE 6379
 
 COPY ./redis /etc/redis
-WORKDIR /srv/data
+WORKDIR /srv/data/redis
 
-ENTRYPOINT ["/etc/redis/entrypoint.sh"]
+ENTRYPOINT ["entrypoint.sh"]
 
-CMD ["redis-server", "/srv/conf/redis/redis.conf"]
+CMD ["redis-server", "/etc/redis/redis.conf"]
