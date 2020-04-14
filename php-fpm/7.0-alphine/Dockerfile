@@ -1,9 +1,9 @@
 FROM endial/alpine:v3.11
 
 LABEL \
-	"Version"="7.0" \
+	"Version"="v7.0" \
 	"Description"="Docker for PHP-FPM 7.0 based on Alpine 3.11." \
-	"Dockerfile"="https://github.com/cofigo/docker-libs" \
+	"Dockerfile"="https://github.com/endial/docker-libs" \
 	"Vendor"="Endial Fang (endial@126.com)"
 
 RUN  apk update \

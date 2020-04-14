@@ -1,9 +1,9 @@
 FROM endial/alpine:v3.11
 
 LABEL \
-	"Version"="5.0.8" \
-	"Description"="Redis 5.0.8 based on Alpine 3.11." \
-	"Dockerfile"="https://github.com/cofigo/docker-libs" \
+	"Version"="v5.0.8" \
+	"Description"="Docker image for Redis 5.0.8 based on Alpine 3.11." \
+	"Dockerfile"="https://github.com/endial/docker-libs" \
 	"Vendor"="Endial Fang (endial@126.com)"
 
 ENV REDIS_VERSION 5.0.8

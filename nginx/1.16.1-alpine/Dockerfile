@@ -1,9 +1,9 @@
 FROM endial/alpine:v3.11
 
 LABEL \
-	"Version"="1.16.1" \
+	"Version"="v1.16.1" \
 	"Description"="Docker image for Nginx 1.16.1 based on Alpine 3.11." \
-	"Dockerfile"="https://github.com/cofigo/docker-libs" \
+	"Dockerfile"="https://github.com/endial/docker-libs" \
 	"Vendor"="Endial Fang (endial@126.com)"
 
 ENV NGINX_VERSION 1.16.1

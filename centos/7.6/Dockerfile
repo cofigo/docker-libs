@@ -1,9 +1,9 @@
 FROM centos:7.6.1810
 
 LABEL \
-	"Version"="7.6" \
+	"Version"="v7.6" \
 	"Description"="Docker image for Centos 7.6-1810." \
-	"Dockerfile"="https://github.com/cofigo/docker-libs" \
+	"Dockerfile"="https://github.com/endial/docker-libs" \
 	"Vendor"="Endial Fang (endial@126.com)"
 
 RUN set -eux; \

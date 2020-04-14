@@ -1,9 +1,9 @@
 FROM alpine:3.11
 
 LABEL \
-        "Version"="3.11" \
+        "Version"="v3.11" \
         "Description"="Alpine Image based on Alpine 3.11." \
-        "Dockerfile"="https://github.com/cofigo/docker-libs" \
+        "Dockerfile"="https://github.com/endial/docker-libs" \
         "Vendor"="Endial Fang (endial@126.com)"
 
 ENV GOSU_VERSION 1.11
