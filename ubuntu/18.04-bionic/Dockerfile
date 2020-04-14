@@ -28,14 +28,14 @@ RUN set -eux; \
 	\
 	localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8; \
 	\
-	fetchDeps=' \
+	fetchDeps=" \
 		ca-certificates \
 		gpg \
 		gpg-agent \
 		dirmngr \
 		wget \
 		binutils \
-	'; \
+	"; \
 	apt install -y --no-install-recommends $fetchDeps; \
 	\
 	dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
@@ -44,7 +44,7 @@ RUN set -eux; \
 	\
 # verify the signature
 	export GNUPGHOME="$(mktemp -d)"; \
-	gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
+	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
 	gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \
 	command -v gpgconf > /dev/null && gpgconf --kill all || :; \
 	rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc; \
