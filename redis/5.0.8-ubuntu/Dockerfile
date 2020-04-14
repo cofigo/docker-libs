@@ -11,8 +11,9 @@ ENV REDIS_DOWNLOAD_URL http://download.redis.io/releases/redis-5.0.8.tar.gz
 ENV REDIS_DOWNLOAD_SHA f3c7eac42f433326a8d981b50dba0169fdfaf46abb23fcda2f933a7552ee4ed7
 
 RUN set -eux; \
+# add group and user, first account, use 1000
 	groupadd -g 1000 redis; \
-	useradd -r -g redis -u 1000 redis; \
+	useradd -M -g redis -s /usr/sbin/nologin -u 1000 redis; \
 	\
 	fetchDeps=' \
 		gcc \
