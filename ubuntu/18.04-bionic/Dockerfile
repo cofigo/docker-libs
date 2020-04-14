@@ -8,11 +8,6 @@ LABEL \
 
 RUN set -eux; \
 	\
-	groupadd -g 1000 redis; \
-	useradd -M -g redis -u 1000 redis; \
-	groupadd -g 1001 nginx; \
-	useradd -M -g nginx -u 1001 nginx; \
-	\
 	mv /etc/apt/sources.list /etc/apt/sources.list.bak; \
 	echo "deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse" > /etc/apt/sources.list; \
 	echo "deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse" >> /etc/apt/sources.list; \
