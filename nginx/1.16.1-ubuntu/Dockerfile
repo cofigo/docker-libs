@@ -9,7 +9,7 @@ LABEL \
 ENV NGINX_VERSION       1.16.1
 ENV NGINX_GPG_KEYS      B0F4253373F8F6F510D42178520A9993A1C052F8
 ENV PCRE_VERSION        8.43
-ENV OPENSSL_VERSION     1.1.1
+ENV OPENSSL_VERSION     1.1.1e
 ENV HTTP_FLV_VERSION    1.2.7
 
 RUN set -eux; \
@@ -17,9 +17,9 @@ RUN set -eux; \
     useradd -M -g nginx -s /usr/sbin/nologin -u 1001 nginx; \
     \
     NGINX_CONFIG=" \
-        --with-pcre=./pcre-8.43 \
-        --with-openssl=./openssl-1.1.1d \
-        --add-module=./nginx-http-flv-module-1.2.7 \
+        --with-pcre=./pcre-$PCRE_VERSION \
+        --with-openssl=./openssl-$OPENSSL_VERSION \
+        --add-module=./nginx-http-flv-module-$HTTP_FLV_VERSION \
         --with-http_ssl_module \
         --with-http_v2_module \
         --with-stream \
@@ -35,7 +35,7 @@ RUN set -eux; \
         --lock-path=/var/run/nginx.lock \
     "; \
     \
-    fetchDeps=' \
+    fetchDeps=" \
         autoconf \
         automake \
         gcc \
@@ -48,8 +48,8 @@ RUN set -eux; \
         gpg-agent \
         dirmngr \
         zlib1g-dev \
-    '; \
-    apt update -y; \
+    "; \
+    apt update; \
     apt install -y --no-install-recommends $fetchDeps; \
     apt install -y --no-install-recommends zlib1g; \
     \
@@ -57,26 +57,33 @@ RUN set -eux; \
     wget -O nginx.tar.gz.asc "http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz.asc"; \
     wget -O nginx_signing.key "https://nginx.org/keys/nginx_signing.key"; \
     \
-    wget -O openssl.tar.gz --no-check-certificate "https://www.openssl.org/source/old/1.1.1/openssl-${OPENSSL_VERSION}e.tar.gz"; \
-    wget -O openssl.tar.gz.asc --no-check-certificate "https://www.openssl.org/source/old/1.1.1/openssl-${OPENSSL_VERSION}e.tar.gz.asc"; \
+    wget -O openssl.tar.gz --no-check-certificate "https://www.openssl.org/source/old/1.1.1/openssl-${OPENSSL_VERSION}.tar.gz"; \
+    wget -O openssl.tar.gz.asc --no-check-certificate "https://www.openssl.org/source/old/1.1.1/openssl-${OPENSSL_VERSION}.tar.gz.asc"; \
     \
-    wget -O pcre.tar.gz "https://nchc.dl.sourceforge.net/project/pcre/pcre/$PCRE_VERSION/pcre-$PCRE_VERSION.tar.gz"; \
-    wget -O pcre.tar.gz "https://nchc.dl.sourceforge.net/project/pcre/pcre/$PCRE_VERSION/pcre-$PCRE_VERSION.tar.gz.sig"; \
+    wget -O pcre.tar.gz --no-check-certificate "https://nchc.dl.sourceforge.net/project/pcre/pcre/$PCRE_VERSION/pcre-$PCRE_VERSION.tar.gz"; \
+    wget -O pcre.tar.gz.sig --no-check-certificate "https://nchc.dl.sourceforge.net/project/pcre/pcre/$PCRE_VERSION/pcre-$PCRE_VERSION.tar.gz.sig"; \
     \
-    wget -O nginx-http-flv.tar.gz "https://github.com/winshining/nginx-http-flv-module/archive/v$HTTP_FLV_VERSION.tar.gz"; \
-    \
+    wget -O nginx-http-flv.tar.gz --no-check-certificate "https://github.com/winshining/nginx-http-flv-module/archive/v$HTTP_FLV_VERSION.tar.gz"; \
 # verify the signature
 #    export GNUPGHOME="$(mktemp -d)"; \
-##    gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys $NGINX_GPG_KEYS; \
+##    gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys $NGINX_GPG_KEYS; \
 #    gpg --import nginx_signing.key; \
 #    gpg --batch --verify nginx.tar.gz.asc nginx.tar.gz; \
 #    command -v gpgconf > /dev/null && gpgconf --kill all || :; \
-#    rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc; \
+#    rm -r "$GNUPGHOME" nginx.tar.gz.asc; \
     \
-    tar -xzvf nginx.tar.gz; \
-    tar -xzvf pcre.tar.gz -C nginx-$NGINX_VERSION; \
-    tar -xzvf openssl.tar.gz -C nginx-$NGINX_VERSION; \
-    tar -xzvf nginx-http-flv.tar.gz -C nginx-$NGINX_VERSION; \
+    mkdir -p nginx-$NGINX_VERSION; \
+    tar -xzvf nginx.tar.gz -C nginx-$NGINX_VERSION --strip-components 1; \
+    rm -rf nginx.tar.gz nginx.tar.gz.asc; \
+    mkdir -p nginx-$NGINX_VERSION/pcre-$PCRE_VERSION; \
+    tar -xzvf pcre.tar.gz -C nginx-$NGINX_VERSION/pcre-$PCRE_VERSION --strip-components 1; \
+    rm -rf pcre.tar.gz pcre.tar.gz.sig; \
+    mkdir -p nginx-$NGINX_VERSION/openssl-$OPENSSL_VERSION; \
+    tar -xzvf openssl.tar.gz -C nginx-$NGINX_VERSION/openssl-$OPENSSL_VERSION --strip-components 1; \
+    rm -rf openssl.tar.gz openssl.tar.gz.asc; \
+    mkdir -p nginx-$NGINX_VERSION/nginx-http-flv-module-$HTTP_FLV_VERSION; \
+    tar -xzvf nginx-http-flv.tar.gz -C nginx-$NGINX_VERSION/nginx-http-flv-module-$HTTP_FLV_VERSION --strip-components 1; \
+    rm -rf nginx-http-flv.tar.gz; \
     \
     cd nginx-$NGINX_VERSION; \
     ./configure $NGINX_CONFIG; \
