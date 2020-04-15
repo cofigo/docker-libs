@@ -21,17 +21,16 @@ RUN set -eux; \
 	echo "deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse" >> /etc/apt/sources.list; \
 	echo "deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse" >> /etc/apt/sources.list; \
 	echo "deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse" >> /etc/apt/sources.list; \
-	apt update; \
-#	apt upgrade -y; \
 	\
+	apt update; \
+	apt upgrade -y; \
 	apt install -y locales; \
 	\
 	localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8; \
 	\
 	fetchDeps=" \
 		ca-certificates \
-		gpg \
-		gpg-agent \
+		gnupg \
 		dirmngr \
 		wget \
 		binutils \
@@ -54,8 +53,8 @@ RUN set -eux; \
 # verify that the binary works
 	gosu nobody true; \
 	\
-	apt autoremove -y $fetchDeps; \
-	apt clean -y; \
+	apt purge -y --auto-remove $fetchDeps; \
+	apt autoclean -y; \
 	rm -rf /var/lib/apt/lists/*;
 
 ENV LANG en_US.utf8
