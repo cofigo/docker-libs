@@ -1,4 +1,4 @@
-FROM endial/ubuntu:v18.04
+FROM --platform=linux/amd64 endial/ubuntu:v18.04
 
 LABEL \
 	"Version"="v1.16.1" \
